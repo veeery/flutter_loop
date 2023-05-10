@@ -1,8 +1,10 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../firebase/notification_service.dart';
+import '../network/app_dio.dart';
 
 class TimerController extends GetxController {
   Duration duration = const Duration();
@@ -20,9 +22,8 @@ class TimerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    FirebaseMessaging.instance.getToken().then((value) => print(value));
+    NotificationService.firebaseForegroundService();
   }
-
 
   startTimer() {
     debugPrint('Timer Start');
@@ -36,10 +37,30 @@ class TimerController extends GetxController {
     }
   }
 
+  Future sendNotification() async {
+    await AppDio.executeApiWithTryCatch(() async {
+      await AppDio.dio().post(
+        'send',
+        data: {
+          "to": "/topics/support",
+          // "to": "cxmNZ-1iQWSl8QnZHi47wT:APA91bFVmoNSqQo1OeYymutdHrMkj46xrc6Pbdcw_fidZD-C3eQhyuBGYInkScCfBOdYFjU1fF4mBy-kaio2rklAegnlYePXtsIPpDjb6HoPitP-PF0cfieWr1_dNSGVrnjk9gAz1NQx",
+          "notification": {"title": "Test Notification", "body": "payload"},
+          "type": "type-a",
+          "data": {"body": "this is subtitle", "title": "this is title", "click_action": "FLUTTER_NOTIFICATION_CLICK"},
+          "priority": "high"
+        },
+        options: AppDio.headersToken(),
+      );
+    });
+  }
+
   void counterLooping() {
     if (second.value % 5 == 0) {
       counterLoop += 1;
-
+      if (counterLoop.value % 6 == 0) {
+        // send notification
+        sendNotification();
+      }
     }
   }
 

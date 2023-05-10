@@ -18,5 +18,5 @@ class Android {
         importance: Importance.max);
   }
 
-  AndroidInitializationSettings initializationSettingAndroid = const AndroidInitializationSettings('ic_launcher');
+  AndroidInitializationSettings initializationSettingAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
 }
