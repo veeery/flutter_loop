@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_loop/timer_card.dart';
-import 'package:flutter_loop/timer_controller.dart';
+import 'package:flutter_loop/timer/timer_card.dart';
+import 'package:flutter_loop/timer/timer_controller.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {

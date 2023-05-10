@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,13 @@ class TimerController extends GetxController {
 
   Timer? timer;
 
+  @override
+  void onInit() {
+    super.onInit();
+    FirebaseMessaging.instance.getToken().then((value) => print(value));
+  }
+
+
   startTimer() {
     debugPrint('Timer Start');
 
@@ -31,6 +39,7 @@ class TimerController extends GetxController {
   void counterLooping() {
     if (second.value % 5 == 0) {
       counterLoop += 1;
+
     }
   }
 
