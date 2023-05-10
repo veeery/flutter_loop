@@ -14,69 +14,71 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Flutter Loop'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildTimerWidget(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildTimerWidget() {
-    return Column(
-      children: [
-        Obx(() {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TimerCard(nameTimer: 'Hour',indicatorTimer: '${timerController.hour}'),
-              TimerCard(nameTimer: 'Minute',indicatorTimer: '${timerController.minute}'),
-              TimerCard(nameTimer: 'Second',indicatorTimer: '${timerController.second}')
-            ],
+      body: GetBuilder<TimerController>(
+        builder: (controller) {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TimerCard(nameTimer: 'Hour', indicatorTimer: '${timerController.hour}'),
+                    TimerCard(nameTimer: 'Minute', indicatorTimer: '${timerController.minute}'),
+                    TimerCard(nameTimer: 'Second', indicatorTimer: '${timerController.second}')
+                  ],
+                ),
+                SizedBox(height: 25),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    children: [
+                      Text('${timerController.isTimerRunning}'),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 75),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    timerController.isTimerRunning.value
+                        ? GestureDetector(
+                            onTap: () => timerController.stopTimer(),
+                            child: Container(
+                              decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(20)),
+                              width: 100,
+                              height: 25,
+                              child: const Center(child: Text('Stop')),
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: () => timerController.startTimer(),
+                            child: Container(
+                              decoration:
+                                  BoxDecoration(color: Colors.greenAccent, borderRadius: BorderRadius.circular(20)),
+                              width: 100,
+                              height: 25,
+                              child: const Center(child: Text('Start')),
+                            ),
+                          ),
+                    GestureDetector(
+                      onTap: () => timerController.resetTime(),
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.cyan, borderRadius: BorderRadius.circular(20)),
+                        width: 100,
+                        height: 25,
+                        child: const Center(child: Text('Reset')),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           );
-        }),
-        // GetBuilder<TimerController>(
-        //   builder: (_) {
-        //     return Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //       children: [
-        //         TimerCard(nameTimer: 'Hour',indicatorTimer: '${timerController.hour}'),
-        //         TimerCard(nameTimer: 'Minute',indicatorTimer: '${timerController.minute}'),
-        //         TimerCard(nameTimer: 'Second',indicatorTimer: '${timerController.second}')
-        //       ],
-        //     );
-        //   },
-        // ),
-        SizedBox(height: 100),
-        GestureDetector(
-          onTap: () => timerController.startTimer(),
-          child: Container(
-            color: Colors.red,
-            width: 100,
-            height: 100,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => timerController.resetTime(),
-          child: Container(
-            color: Colors.blue,
-            width: 100,
-            height: 100,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => timerController.stopTimer(),
-          child: Container(
-            color: Colors.amber,
-            width: 100,
-            height: 100,
-          ),
-        )
-
-      ],
+        },
+      ),
     );
   }
 }

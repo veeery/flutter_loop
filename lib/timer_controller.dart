@@ -16,34 +16,37 @@ class TimerController extends GetxController {
 
   startTimer() {
     debugPrint('Timer Start');
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      incrementTime();
-      update();
-    });
+
+    if (!isTimerRunning.value) {
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        incrementTime();
+        update();
+      });
+    }
   }
 
   void resetTime() {
     duration = const Duration();
-    second = 0.obs;
-    minute = 0.obs;
-    hour = 0.obs;
+    second.value = 0;
+    minute.value = 0;
+    hour.value = 0;
     update();
   }
 
   void stopTimer() {
     timer?.cancel();
-    triggeredTimerStatus();
+    isTimerRunning.value = false;
     update();
   }
 
   void incrementTime() {
     int intervalSecond = 1;
-    triggeredTimerStatus();
+    isTimerRunning.value = true;
 
     second.value = duration.inSeconds + intervalSecond;
     duration = Duration(seconds: second.value);
 
-    if (second.value >= 3) {
+    if (second.value >= 59) {
       duration = const Duration(seconds: 0);
       minute.value += 1;
       if (minute.value >= 59) {
@@ -53,12 +56,6 @@ class TimerController extends GetxController {
       }
     }
 
-    update();
-  }
-
-
-  triggeredTimerStatus() {
-    isTimerRunning.value != isTimerRunning.value;
     update();
   }
 }
