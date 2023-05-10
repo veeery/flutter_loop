@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
                   decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(20)),
                   child: Column(
                     children: [
-                      Text('${timerController.isTimerRunning}'),
+                      Text('Counter Loop : ${timerController.counterLoop}'),
                     ],
                   ),
                 ),

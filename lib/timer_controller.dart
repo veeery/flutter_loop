@@ -10,6 +10,8 @@ class TimerController extends GetxController {
   RxInt minute = 0.obs;
   RxInt hour = 0.obs;
 
+  RxInt counterLoop = 0.obs;
+
   RxBool isTimerRunning = false.obs;
 
   Timer? timer;
@@ -20,13 +22,21 @@ class TimerController extends GetxController {
     if (!isTimerRunning.value) {
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         incrementTime();
+        counterLooping();
         update();
       });
     }
   }
 
+  void counterLooping() {
+    if (second.value % 5 == 0) {
+      counterLoop += 1;
+    }
+  }
+
   void resetTime() {
     duration = const Duration();
+    counterLoop.value = 0;
     second.value = 0;
     minute.value = 0;
     hour.value = 0;
